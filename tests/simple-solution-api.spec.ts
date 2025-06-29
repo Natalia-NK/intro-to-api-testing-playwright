@@ -45,7 +45,7 @@ test('put order with correct data should receive code 200', async ({ request }) 
 //Send a DELETE request to the server
 test('delete order with correct data', async ({ request }) => {
 
-    // send a delete
+    // send delete request
     const requestHeaders = {
         'api_key': 'lI2oxMsRQa0wJLd8',
     };
