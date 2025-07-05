@@ -12,8 +12,9 @@
 
 # Homework 10
 
+
 | HTTP Method | Scenario Description         | Risk   | Expected Status | Status |
-| ----------- |---------------------------------------| --------------- | ------ |
+| ----------- |------------------------------|--------| --------------- | ------ |
 | POST        | Post order with invalid date | V.High | 200             | PASS   |
 | POST        | Post order with valid date   | Medium | 200             | PASS   |
 | POST        | Post order with valid data   | Low    | 200             | PASS   |
