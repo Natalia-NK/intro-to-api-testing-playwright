@@ -1,6 +1,7 @@
-import { expect, test } from '@playwright/test'
+import {APIResponse, expect, test} from '@playwright/test'
 
 import { StatusCodes } from 'http-status-codes'
+import {OrderDto} from "./dto/orderDto";
 
 test('get order with correct id should receive code 200', async ({ request }) => {
   // Build and send a GET request to the server
@@ -54,3 +55,41 @@ test('delete order with correct data', async ({ request }) => {
   console.log('response status:', response.status())
   expect(response.status()).toBe(StatusCodes.NO_CONTENT)
 })
+
+test('post order with correct data', async ({ request }) => {
+  //send a POST request to the server
+  const requestBody = new OrderDto('Open', 0, 'new', '456677', 'new');
+
+  const response: APIResponse = await request.post('https://backend.tallinn-learning.ee/test-orders', {
+    data: requestBody,
+  })
+
+  //log the response status and body
+  console.log('response status:', response.status())
+  console.log('response body:', await response.json())
+  expect(response.status()).toBe(StatusCodes.OK)
+})
+
+test ('post order with correct id should receive code 200', async ({ request }) => {
+  //prepare request body with dto pattern
+  const requestBody = new OrderDto('Open', 0, 'new', '456677', 'new', );
+  const response:APIResponse = await request.post('https://backend.tallinn-learning.ee/test-orders',{
+    data: requestBody
+  });
+
+  console.log('response status:', response.status())
+})
+
+
+test('test mess', async ({request}) => {
+  const requestBody = {};
+  const response = await request.post('https://backend.tallinn-learning.ee/test-orders', {
+    headers: {},
+    data: requestBody
+  })
+
+  console.log('response status:', response.status())
+  expect.soft(response.status()).toBe(StatusCodes.OK)
+})
+
+
