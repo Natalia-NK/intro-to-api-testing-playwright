@@ -11,4 +11,4 @@ export class LoginDto {
             process.env.USER || '',
             process.env.PASSWORD || '')
     }
-};
+}
