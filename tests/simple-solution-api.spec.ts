@@ -2,6 +2,7 @@ import {APIResponse, expect, test} from '@playwright/test'
 
 import { StatusCodes } from 'http-status-codes'
 import {OrderDto} from "./dto/orderDto";
+import {LoginDto} from "./dto/login-dto";
 
 test('get order with correct id should receive code 200', async ({ request }) => {
   // Build and send a GET request to the server
@@ -29,9 +30,17 @@ test('put order with correct data should receive code 200', async ({ request }) 
     customerPhone: '1234567',
     comment: 'test comment',
   }
-  // Send a PUT request to the server
+  // request api key
+  const login_response = await request.get('https://backend.tallinn-learning.ee/test-orders', {
+    data: LoginDto.createLoginWithCorrectData()
+  })
+
+  const loginBody = await login_response.json()
+  const apiKey = loginBody.apiKey
+
+  // send delete request
   const requestHeaders = {
-    api_key: 'lI2oxMsRQa0wJLd8',
+    api_key: apiKey,
   }
   const response = await request.put('https://backend.tallinn-learning.ee/test-orders/1', {
     headers: requestHeaders,
@@ -45,9 +54,17 @@ test('put order with correct data should receive code 200', async ({ request }) 
 
 //Send a DELETE request to the server
 test('delete order with correct data', async ({ request }) => {
+  // request api key
+  const login_response = await request.get('https://backend.tallinn-learning.ee/test-orders', {
+    data: LoginDto.createLoginWithCorrectData()
+  })
+
+  const loginBody = await login_response.json()
+  const apiKey = loginBody.apiKey
+
   // send delete request
   const requestHeaders = {
-    api_key: 'lI2oxMsRQa0wJLd8',
+    api_key: apiKey,
   }
   const response = await request.delete('https://backend.tallinn-learning.ee/test-orders/1', {
     headers: requestHeaders,
