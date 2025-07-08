@@ -1,8 +1,8 @@
-import {APIResponse, expect, test} from '@playwright/test'
+import { APIResponse, expect, test } from '@playwright/test'
 
 import { StatusCodes } from 'http-status-codes'
-import {OrderDto} from "./dto/orderDto";
-import {LoginDto} from "./dto/login-dto";
+import { OrderDto } from './dto/orderDto'
+import { LoginDto } from './dto/login-dto'
 
 test('get order with correct id should receive code 200', async ({ request }) => {
   // Build and send a GET request to the server
@@ -32,7 +32,7 @@ test('put order with correct data should receive code 200', async ({ request }) 
   }
   // request api key
   const login_response = await request.get('https://backend.tallinn-learning.ee/test-orders', {
-    data: LoginDto.createLoginWithCorrectData()
+    data: LoginDto.createLoginWithCorrectData(),
   })
 
   const loginBody = await login_response.json()
@@ -56,7 +56,7 @@ test('put order with correct data should receive code 200', async ({ request }) 
 test('delete order with correct data', async ({ request }) => {
   // request api key
   const login_response = await request.get('https://backend.tallinn-learning.ee/test-orders', {
-    data: LoginDto.createLoginWithCorrectData()
+    data: LoginDto.createLoginWithCorrectData(),
   })
 
   const loginBody = await login_response.json()
@@ -75,11 +75,14 @@ test('delete order with correct data', async ({ request }) => {
 
 test('post order with correct data', async ({ request }) => {
   //send a POST request to the server
-  const requestBody = new OrderDto('Open', 0, 'new', '456677', 'new');
+  const requestBody = new OrderDto('Open', 0, 'new', '456677', 'new')
 
-  const response: APIResponse = await request.post('https://backend.tallinn-learning.ee/test-orders', {
-    data: requestBody,
-  })
+  const response: APIResponse = await request.post(
+    'https://backend.tallinn-learning.ee/test-orders',
+    {
+      data: requestBody,
+    },
+  )
 
   //log the response status and body
   console.log('response status:', response.status())
@@ -87,26 +90,26 @@ test('post order with correct data', async ({ request }) => {
   expect(response.status()).toBe(StatusCodes.OK)
 })
 
-test ('post order with correct id should receive code 200', async ({ request }) => {
+test('post order with correct id should receive code 200', async ({ request }) => {
   //prepare request body with dto pattern
-  const requestBody = new OrderDto('Open', 0, 'new', '456677', 'new', );
-  const response:APIResponse = await request.post('https://backend.tallinn-learning.ee/test-orders',{
-    data: requestBody
-  });
+  const requestBody = new OrderDto('Open', 0, 'new', '456677', 'new')
+  const response: APIResponse = await request.post(
+    'https://backend.tallinn-learning.ee/test-orders',
+    {
+      data: requestBody,
+    },
+  )
 
   console.log('response status:', response.status())
 })
 
-
-test('test mess', async ({request}) => {
-  const requestBody = {};
+test('test mess', async ({ request }) => {
+  const requestBody = {}
   const response = await request.post('https://backend.tallinn-learning.ee/test-orders', {
     headers: {},
-    data: requestBody
+    data: requestBody,
   })
 
   console.log('response status:', response.status())
   expect.soft(response.status()).toBe(StatusCodes.OK)
 })
-
-
