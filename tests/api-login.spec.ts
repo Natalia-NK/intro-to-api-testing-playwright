@@ -4,19 +4,18 @@ import { StatusCodes } from 'http-status-codes'
 import { OrderDto } from './dto/orderDto'
 import { LoginDto } from './dto/login-dto'
 
-// JWT regex
 const jwtRegex = /^eyJhb[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/
+const url = 'https://backend.tallinn-learning.ee'
+const loginStudent = url + '/login/student'
+const order = url + '/order'
 
 test('api login with correct credentials using loginDto and verify JWT', async ({ request }) => {
-  // prepare login request body
-  const requestBody = LoginDto.createLoginWithCorrectData()
-  // make login request
-  const response = await request.post('https://backend.tallinn-learning.ee/login/student', {
+  const requestBody: LoginDto = LoginDto.createLoginWithCorrectData()
+  const response: APIResponse = await request.post(loginStudent, {
     data: requestBody,
   })
 
-  // retrieve jwt token
-  const jwtValue = response.text()
+  const jwtValue: Promise<string> = response.text()
 
   console.log('JWT token:', jwtValue)
 
@@ -25,25 +24,20 @@ test('api login with correct credentials using loginDto and verify JWT', async (
 })
 
 test('login and create order with correct credentials and order data', async ({ request }) => {
-  // login student with correct data using LoginDto
-  const requestBody = LoginDto.createLoginWithCorrectData()
-  const response = await request.post('https://backend.tallinn-learning.ee/login/student', {
+  const requestBody: LoginDto = LoginDto.createLoginWithCorrectData()
+  const response: APIResponse = await request.post(loginStudent, {
     data: requestBody,
   })
 
-  // retrieve jwt token
   const jwt = response.text()
-  // prepare new order request body
   const orderBody = new OrderDto('Open', 0, 'new', '456677', 'new')
-  // make request to create new order with jwt token
-  const orderResponse = await request.post('https://backend.tallinn-learning.ee/order', {
+  const orderResponse: APIResponse = await request.post(order, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
     data: orderBody,
   })
 
-  // parse order response
   const orderResponseBody = await orderResponse.json()
 
   console.log('orderResponse status:', orderResponse.status())
@@ -53,18 +47,14 @@ test('login and create order with correct credentials and order data', async ({ 
 })
 
 test('make request with incorrect HTTP method', async ({ request }) => {
-  // login student with correct data using LoginDto
-  const requestBody = LoginDto.createLoginWithCorrectData()
-  const response = await request.post('https://backend.tallinn-learning.ee/login/student', {
+  const requestBody: LoginDto = LoginDto.createLoginWithCorrectData()
+  const response: APIResponse = await request.post(loginStudent, {
     data: requestBody,
   })
 
-  // retrieve jwt token
   const jwt = response.text()
-  // prepare new order request body
   const orderBody = new OrderDto('Open', 0, 'new', '456677', 'new')
-  // make request to create new order with jwt token and invalid HTTP method 'patch'
-  const orderResponse = await request.patch('https://backend.tallinn-learning.ee/order', {
+  const orderResponse: APIResponse = await request.patch(order, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -75,18 +65,14 @@ test('make request with incorrect HTTP method', async ({ request }) => {
 })
 
 test('make request with incorrect order body', async ({ request }) => {
-  // login student with correct data using LoginDto
-  const requestBody = LoginDto.createLoginWithCorrectData()
-  const response = await request.post('https://backend.tallinn-learning.ee/login/student', {
+  const requestBody: LoginDto = LoginDto.createLoginWithCorrectData()
+  const response: APIResponse = await request.post(loginStudent, {
     data: requestBody,
   })
 
-  // retrieve jwt token
-  const jwt = response.text()
-  // prepare new order request body
+  const jwt: Promise<string> = response.text()
   const orderBody = { name: 'test' }
-  // make request to create new order with jwt token and invalid order body
-  const orderResponse = await request.post('https://backend.tallinn-learning.ee/order', {
+  const orderResponse: APIResponse = await request.post(order, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
