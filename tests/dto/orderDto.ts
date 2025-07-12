@@ -1,13 +1,10 @@
 export class OrderDto {
-  //define files of the class
   status: string
   courierId: number
   customerName: string
   customerPhone: string
   comment: string
   id: number
-  //new parameter
-  //crate a constructor
 
   constructor(
     status: string,
