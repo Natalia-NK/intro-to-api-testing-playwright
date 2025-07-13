@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes'
 
 const url = 'https://backend.tallinn-learning.ee/api/loan-calc/'
 
-test('post credit info with negative decision should receive code 200', async ({ request }) => {
+test('post invalid credit info for negative decision (Age check)', async ({ request }) => {
   //prepare request body with dto pattern and very high risk
   const requestBody = new ApplicationDto(100, 0, 17, true, 1000, 12)
   const response: APIResponse = await request.post(url + 'decision', {
@@ -16,9 +16,7 @@ test('post credit info with negative decision should receive code 200', async ({
   expect(response.status()).toBe(StatusCodes.OK)
 })
 
-test('post credit info with positive decision (medium risk) should receive code 200', async ({
-  request,
-}) => {
+test('post valid credit info for positive decision (medium risk)', async ({ request }) => {
   // prepare request body with dto pattern and medium risk
   const requestBody = new ApplicationDto(20000, 0, 30, true, 500, 6)
   const response: APIResponse = await request.post(url + 'decision', {
@@ -29,9 +27,7 @@ test('post credit info with positive decision (medium risk) should receive code 
   expect(response.status()).toBe(StatusCodes.OK)
 })
 
-test('post credit info with positive decision (low risk) should receive code 200', async ({
-  request,
-}) => {
+test('post valid credit info for positive decision (low risk)', async ({ request }) => {
   // prepare request body with dto pattern and low risk
   const requestBody = new ApplicationDto(20000, 0, 30, true, 500, 12)
   const response: APIResponse = await request.post(url + 'decision', {
