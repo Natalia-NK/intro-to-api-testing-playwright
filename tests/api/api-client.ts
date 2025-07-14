@@ -22,6 +22,7 @@ export class ApiClient {
       ApiClient.instance = new ApiClient(request)
       await this.instance.requestJwt()
     }
+
     return ApiClient.instance
   }
 
@@ -58,5 +59,34 @@ export class ApiClient {
     console.log(responseBody)
 
     return responseBody.id
+  }
+  async searchOrderAndReturnOrder(orderId: number): Promise<any> {
+    console.log('Order searching: ', orderId)
+    const responseSearch = await this.request.get(`${serviceURL}${orderPath}/${orderId}`, {
+      headers: {
+        Authorization: `Bearer ${this.jwt}`,
+      },
+    })
+    console.log('Order response: ', responseSearch)
+    expect(responseSearch.status()).toBe(StatusCodes.OK)
+    const responseSearchBody = await responseSearch.json()
+    console.log('Response search: ', responseSearchBody)
+    return responseSearchBody
+  }
+
+  async deleteOrderAndReturnStatus(orderId: number): Promise<boolean> {
+    const responseDelete = await this.request.delete(`${serviceURL}${orderPath}/${orderId}`, {
+      headers: {
+        Authorization: `Bearer ${this.jwt}`,
+      },
+    })
+
+    console.log('Order delete response: ', responseDelete)
+
+    expect(responseDelete.status()).toBe(StatusCodes.OK)
+    const responseDeleteBody = await responseDelete.body()
+    console.log('Order deleted: ')
+    console.log(responseDeleteBody)
+    return responseDelete.status() === StatusCodes.OK
   }
 }
