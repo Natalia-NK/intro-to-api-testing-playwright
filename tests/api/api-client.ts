@@ -60,7 +60,7 @@ export class ApiClient {
 
     return responseBody.id
   }
-  async searchOrderAndReturnOrder(orderId: number): Promise<any> {
+  async searchOrderAndReturnOrder(orderId: number): Promise<object> {
     console.log('Order searching: ', orderId)
     const responseSearch = await this.request.get(`${serviceURL}${orderPath}/${orderId}`, {
       headers: {
