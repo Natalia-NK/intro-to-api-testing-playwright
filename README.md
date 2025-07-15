@@ -13,8 +13,17 @@
 # Homework 10
 
 
-| HTTP Method | Scenario Description         | Risk   | Expected Status | Status |
-| ----------- |------------------------------|--------| --------------- | ------ |
-| POST        | Post order with invalid date | V.High | 200             | PASS   |
-| POST        | Post order with valid date   | Medium | 200             | PASS   |
-| POST        | Post order with valid data   | Low    | 200             | PASS   |
+| HTTP Method | Scenario Description       | Risk   | Expected Status | Status |
+| ----------- |----------------------------|--------| --------------- | ------ |
+| POST        | Post order with valid data | V.High | 200             | PASS   |
+| POST        | Post order with valid data | Medium | 200             | PASS   |
+| POST        | Post order with valid data | Low    | 200             | PASS   |
+
+# Homework 11
+
+
+| HTTP Method | Scenario Description                | Expected Status | Status |
+|-------------|-------------------------------------|-----------------| ------ |
+| POST        | Post order with valid data & tekst  | 200             | PASS   |
+| PATCH       | Post order with invalid HTTP method | 405             | PASS   |
+| POST        | Post order with invalid body data   | 400             | PASS   |
